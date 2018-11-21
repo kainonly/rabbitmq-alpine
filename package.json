@@ -1,0 +1,20 @@
+{
+  "name": "dockerself",
+  "description": "Docker Note",
+  "scripts": {
+    "docs": "docsify serve ./docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kainonly/dockerself.git"
+  },
+  "keywords": [
+    "docker"
+  ],
+  "author": "kain",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kainonly/dockerself/issues"
+  },
+  "homepage": "https://github.com/kainonly/dockerself#readme"
+}
