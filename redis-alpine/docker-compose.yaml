@@ -1,0 +1,13 @@
+version: '3'
+services:
+  redis:
+    build: ./
+    restart: always
+    privileged: true
+    sysctls:
+      net.core.somaxconn: 65535
+    volumes:
+      - ./redis/data:/data
+      - ./redis/override.conf:/etc/override.conf
+    ports:
+      - 6379:6379
