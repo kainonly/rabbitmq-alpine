@@ -1,7 +1,13 @@
-FROM alpine:3.8
+FROM alpine:latest
+
 ENV NGINX_VERSION 1.15.6
-RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
-    && CONFIG="\
+ENV GPG_KEYS B0F4253373F8F6F510D42178520A9993A1C052F8
+
+RUN addgroup -S nginx \
+    && adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx nginx \
+    && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+
+RUN CONFIG="\
     --prefix=/etc/nginx \
     --sbin-path=/usr/sbin/nginx \
     --modules-path=/usr/lib/nginx/modules \
@@ -46,8 +52,6 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
     --with-file-aio \
     --with-http_v2_module \
     " \
-    && addgroup -S nginx \
-    && adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx nginx \
     && apk add --no-cache --virtual .build-deps \
     gcc \
     libc-dev \
@@ -124,7 +128,9 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
-EXPOSE 80
+VOLUME /etc/nginx/vhost /var/log/nginx
+
+EXPOSE 80 443
 
 STOPSIGNAL SIGTERM
 
