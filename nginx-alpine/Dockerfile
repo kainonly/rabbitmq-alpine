@@ -1,7 +1,5 @@
 FROM alpine:latest
 
-LABEL maintainer="Vane Breeze OS"
-
 ENV VERSION 1.14.1
 
 RUN addgroup -g 82 -S nginx \
@@ -18,4 +16,4 @@ EXPOSE 80 443
 
 STOPSIGNAL SIGTERM
 
-CMD ["nginx", "-g", "daemon off"]
+CMD ["nginx", "-g", "daemon off;"]

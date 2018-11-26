@@ -1,4 +1,4 @@
-version: 3
+version: '3'
 services:
   nginx:
     build: ./
@@ -6,6 +6,7 @@ services:
     volumes:
       - ./nginx/vhost:/etc/nginx/vhost
       - ./nginx/log:/var/log/nginx
+      - ./website:/website
     ports:
       - 80:80
       - 443:443
