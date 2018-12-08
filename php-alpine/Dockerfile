@@ -11,29 +11,6 @@ RUN set -x \
     && adduser -u 82 -D -S -G nginx nginx \
     && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
-RUN apk add --no-cache --virtual .persistent-deps \ 
-    ca-certificates \
-    curl \
-    tar \
-    openssl \
-    argon2 \
-    argon2-libs \
-    acl \
-    libxml2 \
-    bzip2 \
-    libedit \
-    libsodium \
-    sqlite \
-    enchant \
-    gd \
-    jpeg \
-    libpng \
-    libxpm \
-    freetype \
-    gmp \
-    libxslt \
-    libzip
-
 RUN set -xe \
     && apk add --no-cache --virtual .fetch-deps gnupg \
     && mkdir -p /usr/src && cd /usr/src \
@@ -142,3 +119,47 @@ RUN set -xe \
     && cd / && rm -rf /usr/src/php-${PHP_VERSION} \
     && apk del .build-deps \
     && rm -rf /tmp/pear ~/.pearrc
+
+# ENV EXT_MONGO_VERSION 1.5.3
+# ENV EXT_REDIS 4.2.0
+# ENV EXT_MSGPACK 2.0.2
+
+# RUN set -xe \
+#     && apk add --no-cache --virtual .build-deps ${PHPIZE_DEPS} \
+#     && cd /usr/src \
+#     && curl -fSL "http://pecl.php.net/get/mongodb-${EXT_MONGO_VERSION}.tgz" -o mongodb.tgz \
+#     && tar -xvzf mongodb.tgz && rm mongodb.tgz \
+#     && cd mongodb-${EXT_MONGO_VERSION} \
+#     && phpize \
+#     && ./configure --with-php-config=php-config \
+#     && make -j "$(nproc)" &&  make install && make clean \
+#     && cd / && rm -rf /usr/src/mongodb-${EXT_MONGO_VERSION} \
+#     && cd /usr/src \
+#     && curl -fSL "http://pecl.php.net/get/redis-${EXT_REDIS}.tgz" -o redis.tgz \
+#     && tar -xvzf redis.tgz && rm redis.tgz \
+#     && cd redis-${EXT_REDIS} \
+#     && phpize \
+#     && ./configure --with-php-config=php-config \
+#     && make -j "$(nproc)" &&  make install && make clean \
+#     && cd / && rm -rf /usr/src/redis-${EXT_REDIS} \
+#     && cd /usr/src \
+#     && curl -fSL "http://pecl.php.net/get/msgpack-${EXT_MSGPACK}.tgz" -o msgpack.tgz \
+#     && tar -xvzf msgpack.tgz && rm msgpack.tgz \
+#     && cd msgpack-${EXT_MSGPACK} \
+#     && phpize \
+#     && ./configure --with-php-config=php-config \
+#     && make -j "$(nproc)" &&  make install && make clean \
+#     && cd / && rm -rf /usr/src/msgpack-${EXT_MSGPACK} \
+#     && apk del .build-deps \
+#     && rm -rf /tmp/pear ~/.pearrc
+
+# COPY php-fpm.conf /usr/local/etc/php-fpm.conf
+# COPY www.conf /usr/local/etc/php-fpm.d/www.conf
+
+# VOLUME /usr/local/etc/php-fpm.d
+
+# EXPOSE 9000
+
+# STOPSIGNAL SIGTERM
+
+# CMD ["php-fpm"]
