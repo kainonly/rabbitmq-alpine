@@ -1,60 +1,144 @@
-FROM alpine:latest
+FROM alpine:edge
 
-ENV VERSION 7.2.12
+ENV PHP_VERSION 7.3.0
+ENV GPG_KEYS CBAF69F173A0FEA4B537F470D66C9593118BCCB6 F38252826ACD957EF380D39F2F7956BC5DA04B5D
+ENV PHP_URL="https://secure.php.net/distributions/php-7.3.0.tar.gz" PHP_ASC_URL="https://secure.php.net/distributions/php-7.3.0.tar.gz.asc"
+ENV PHP_SHA256="391bd0f91d9bdd01ab47ef9607bad8c65e35bc9bb098fb7777b2556e2c847b11" PHP_MD5=""
+ENV PHPIZE_DEPS autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
 
-RUN addgroup -g 82 -S nginx \
-    && adduser -u 82 -D -S -h /website -s -G nginx nginx \
+RUN set -x \
+    && addgroup -g 82 -S nginx \
+    && adduser -u 82 -D -S -G nginx nginx \
     && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
-RUN apk add --no-cache \
-    php7 \
-    php7-fpm \
-    php7-common \
-    php7-calendar \
-    php7-bz2 \
-    php7-zip \
-    php7-session \
-    php7-curl \
-    php7-imap \
-    php7-soap \
-    php7-openssl \
-    php7-ctype \
-    php7-mcrypt \
-    php7-sodium \
-    php7-exif \
-    php7-gd \
-    php7-fileinfo \
-    php7-gmp \
-    php7-bcmath \
-    php7-iconv \
-    php7-mbstring \
-    php7-enchant \
-    php7-json \
-    php7-yaml \
-    php7-xml \
-    php7-dom \
-    php7-xmlrpc \
-    php7-simplexml \
-    php7-xmlreader \
-    php7-xmlwriter \
-    php7-xsl \
-    php7-redis \
-    php7-mongodb \
-    php7-mysqli \
-    php7-mysqlnd \
-    php7-pdo \
-    php7-pdo_mysql \
-    php7-phar \
-    php7-opcache \
-    php7-xdebug
+RUN apk add --no-cache --virtual .persistent-deps \ 
+    ca-certificates \
+    curl \
+    tar \
+    openssl \
+    argon2 \
+    argon2-libs \
+    acl \
+    libxml2 \
+    bzip2 \
+    libedit \
+    libsodium \
+    sqlite \
+    enchant \
+    gd \
+    jpeg \
+    libpng \
+    libxpm \
+    freetype \
+    gmp \
+    libxslt \
+    libzip
 
-COPY php-fpm.conf /etc/php7/php-fpm.conf
-COPY www.conf /etc/php7/php-fpm.d/www.conf
+RUN set -xe \
+    && apk add --no-cache --virtual .fetch-deps gnupg \
+    && mkdir -p /usr/src && cd /usr/src \
+    && curl -fSL "${PHP_URL}" -o php.tar.gz \
+    && if [ -n "${PHP_SHA256}" ]; then \
+    echo "${PHP_SHA256} *php.tar.gz" | sha256sum -c -; \
+    fi; if [ -n "${PHP_MD5}" ]; then \
+    echo "${PHP_MD5} *php.tar.gz" | md5sum -c -; \
+    fi; if [ -n "${PHP_ASC_URL}" ]; then \
+    curl -fSL "${PHP_ASC_URL}" -o php.tar.gz.asc; \
+    export GNUPGHOME="$(mktemp -d)"; \
+    for key in $GPG_KEYS; do \
+    gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+    done; \
+    gpg --batch --verify php.tar.gz.asc php.tar.gz; \
+    command -v gpgconf > /dev/null && gpgconf --kill all; \
+    rm -rf "$GNUPGHOME"; \
+    fi; apk del .fetch-deps
 
-VOLUME /website /website
+ENV PHPDEV argon2-dev \
+    coreutils \
+    acl-dev \
+    libxml2-dev \
+    bzip2-dev \
+    curl-dev \
+    libedit-dev \
+    openssl-dev \
+    libsodium-dev \
+    sqlite-dev \
+    enchant-dev \
+    gd-dev \
+    jpeg-dev \
+    libpng-dev \
+    libxpm-dev \
+    freetype-dev \
+    gmp-dev \
+    libxslt-dev \
+    libzip-dev
 
-EXPOSE 9000
-
-STOPSIGNAL SIGTERM
-
-CMD [ "php-fpm7" ]
+RUN set -xe \
+    && apk add --no-cache --virtual .build-deps ${PHPIZE_DEPS} ${PHPDEV} \
+    && cd /usr/src \
+    && tar -xvzf php.tar.gz && rm php.tar.gz \
+    && cd /usr/src/php-${PHP_VERSION} \
+    && gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
+    && ./configure \
+    --build="$gnuArch" \
+    --enable-option-checking=fatal \
+    --disable-debug \
+    --disable-rpath \
+    --enable-fpm \
+    --disable-cgi \
+    --with-fpm-user=nginx \
+    --with-fpm-group=nginx \
+    --with-fpm-acl \
+    --with-libxml-dir \
+    --with-openssl \
+    --with-kerberos \
+    --with-pcre-regex \
+    --with-zlib \
+    --enable-bcmath \
+    --with-bz2 \
+    --enable-calendar \
+    --with-curl \
+    --enable-dba \
+    --with-enchant \
+    --enable-exif \
+    --disable-fileinfo \
+    --with-pcre-dir \
+    --enable-ftp \
+    --with-gd \
+    --with-jpeg-dir \
+    --with-png-dir \
+    --with-zlib-dir \
+    --with-xpm-dir \
+    --with-freetype-dir \
+    --with-gettext \
+    --with-gmp \
+    --with-mhash \
+    --with-sodium=shared \
+    --with-libedit \
+    --enable-mbstring \
+    --enable-mbregex \
+    --with-mysqli \
+    --enable-embedded-mysqli \
+    --with-mysql-sock=/tmp/mysql.sock \
+    --enable-pcntl \
+    --with-pdo-mysql \
+    --enable-session \
+    --enable-shmop \
+    --enable-soap \
+    --enable-sockets \
+    --enable-sysvsem \
+    --enable-wddx \
+    --with-xmlrpc \
+    --enable-xml \
+    --with-iconv-dir \
+    --with-xsl \
+    --enable-zip \
+    --enable-mysqlnd \
+    --without-pear \
+    --enable-shared \
+    --with-password-argon2 \
+    $(test "$gnuArch" = 's390x-linux-gnu' && echo '--without-pcre-jit') \
+    && make -j "$(nproc)" &&  make install && make clean \
+    && cd / && rm -rf /usr/src/php-${PHP_VERSION} \
+    && apk del .build-deps \
+    && rm -rf /tmp/pear ~/.pearrc
