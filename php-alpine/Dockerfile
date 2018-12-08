@@ -1,15 +1,39 @@
 FROM alpine:edge
 
-ENV PHP_VERSION 7.2.13
-ENV GPG_KEYS 1729F83938DA44E27BA0F4D3DBDB397470D12172 B1B44D8F021E4E2D6021E995DC9FF8D3EE5AF27F
-ENV PHP_URL="https://secure.php.net/distributions/php-7.2.13.tar.gz" PHP_ASC_URL="https://secure.php.net/distributions/php-7.2.13.tar.gz.asc"
-ENV PHP_SHA256="e563cee406b1ec96649c22ed2b35796cfe4e9aa9afa6eab6be4cf2fe5d724744" PHP_MD5=""
+ENV PHP_VERSION 7.3.0
+ENV GPG_KEYS CBAF69F173A0FEA4B537F470D66C9593118BCCB6 F38252826ACD957EF380D39F2F7956BC5DA04B5D
+ENV PHP_URL="https://secure.php.net/distributions/php-7.3.0.tar.gz" PHP_ASC_URL="https://secure.php.net/distributions/php-7.3.0.tar.gz.asc"
+ENV PHP_SHA256="391bd0f91d9bdd01ab47ef9607bad8c65e35bc9bb098fb7777b2556e2c847b11" PHP_MD5=""
 ENV PHPIZE_DEPS autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
 
 RUN set -x \
     && addgroup -g 82 -S nginx \
     && adduser -u 82 -D -S -G nginx nginx \
     && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+
+RUN set -xe \
+    apk add --no-cache --virtual .persistent-deps \ 
+    ca-certificates \
+    curl \
+    tar \
+    openssl \
+    argon2 \
+    argon2-libs \
+    acl \
+    libxml2 \
+    bzip2 \
+    libedit \
+    libsodium \
+    sqlite \
+    enchant \
+    gd \
+    jpeg \
+    libpng \
+    libxpm \
+    freetype \
+    gmp \
+    libxslt \
+    libzip
 
 RUN set -xe \
     && apk add --no-cache --virtual .fetch-deps gnupg curl \
@@ -122,7 +146,6 @@ RUN set -xe \
 
 ENV EXT_MONGO_VERSION 1.5.3
 ENV EXT_REDIS 4.2.0
-ENV EXT_MSGPACK 2.0.2
 
 RUN set -xe \
     && apk add --no-cache --virtual .build-deps curl ${PHPIZE_DEPS} \
@@ -142,14 +165,6 @@ RUN set -xe \
     && ./configure --with-php-config=php-config \
     && make -j "$(nproc)" &&  make install && make clean \
     && cd / && rm -rf /usr/src/redis-${EXT_REDIS} \
-    && cd /usr/src \
-    && curl -fSL "http://pecl.php.net/get/msgpack-${EXT_MSGPACK}.tgz" -o msgpack.tgz \
-    && tar -xvzf msgpack.tgz && rm msgpack.tgz \
-    && cd msgpack-${EXT_MSGPACK} \
-    && phpize \
-    && ./configure --with-php-config=php-config \
-    && make -j "$(nproc)" &&  make install && make clean \
-    && cd / && rm -rf /usr/src/msgpack-${EXT_MSGPACK} \
     && apk del .build-deps \
     && rm -rf /tmp/pear ~/.pearrc
 
