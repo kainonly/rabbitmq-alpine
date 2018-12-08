@@ -3,7 +3,5 @@ services:
   php:
     build: ./
     restart: always
-    volumes:
-      - ./website:/website
     ports:
       - 9000:9000
