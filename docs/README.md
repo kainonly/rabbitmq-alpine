@@ -1,11 +1,10 @@
 # All Image
 
-> Docker Custom container image,More streamlined than the official
+> Docker custom container for more comprehensive scenarios
 
 ## nginx-alpine
 
 - version `1.14.1`
-- size `2.686M`
 
 Defined docker-compose.yaml
 
@@ -26,8 +25,7 @@ services:
 
 ## php-alpine
 
-- version `7.2.12`
-- size `16.792M`
+- version `7.3.0`
 
 Defined docker-compose.yaml
 
@@ -46,7 +44,6 @@ services:
 ## rabbitmq-alpine
 
 - version `3.7.8`
-- size `29.121M`
 
 Defined docker-compose.yaml
 
