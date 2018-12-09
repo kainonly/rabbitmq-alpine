@@ -1,7 +1,7 @@
 version: '3'
 services:
   php:
-    image: c7423a246d8f
+    build: ./
     restart: always
     ports:
       - 9000:9000

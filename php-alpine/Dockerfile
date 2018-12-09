@@ -11,8 +11,7 @@ RUN set -x \
     && adduser -u 82 -D -S -G nginx nginx \
     && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
-RUN set -xe \
-    apk add --no-cache --virtual .persistent-deps \ 
+RUN apk add --no-cache --virtual .persistent-deps \ 
     ca-certificates \
     curl \
     tar \
@@ -36,7 +35,7 @@ RUN set -xe \
     libzip
 
 RUN set -xe \
-    && apk add --no-cache --virtual .fetch-deps gnupg curl \
+    && apk add --no-cache --virtual .fetch-deps gnupg \
     && mkdir -p /usr/src && cd /usr/src \
     && curl -fSL "${PHP_URL}" -o php.tar.gz \
     && if [ -n "${PHP_SHA256}" ]; then \
