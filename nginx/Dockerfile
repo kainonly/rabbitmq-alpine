@@ -1,6 +1,6 @@
-FROM alpine:latest
+FROM alpine:edge
 
-ENV VERSION 1.14.1
+ENV VERSION 1.14.2
 
 RUN addgroup -g 82 -S nginx \
     && adduser -u 82 -D -S -h /var/cache/nginx -s -G nginx nginx \
