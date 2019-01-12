@@ -16,7 +16,7 @@ Set docker-compose
 ```yaml
 version: '3'
 services:
-  redis:
+  rabbitmq:
     image: kainonly/rabbitmq-alpine:3.7.8
     restart: always
     hostname: 'localhost'
