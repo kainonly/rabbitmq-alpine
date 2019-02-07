@@ -1,9 +1,6 @@
 ## RabbitMQ-Alpine
 
-RabbitMQ minimalist custom image
-
-- size `46.8` mb
-- version `3.7.8`
+RabbitMQ custom image
 
 Docker Pull Command
 
@@ -14,10 +11,10 @@ docker pull kainonly/rabbitmq-alpine
 Set docker-compose
 
 ```yaml
-version: '3'
+version: '3.7'
 services:
   rabbitmq:
-    image: kainonly/rabbitmq-alpine:3.7.8
+    image: kainonly/rabbitmq-alpine:3.7.11
     restart: always
     hostname: 'localhost'
     ports:
@@ -29,3 +26,11 @@ services:
       - 15675:15675
       - 25672:25672
 ```
+
+- **amqp** `5672`
+- **clustering** `25672`
+- **http** `15672`
+- **stomp** `61613`
+- **web-stomp** `15674`
+- **mqtt** `1883`
+- **web-mqtt** `15675`

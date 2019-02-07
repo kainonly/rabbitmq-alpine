@@ -1,7 +1,5 @@
 FROM rabbitmq:alpine
 
-ENV VERSION 3.7.8
-
 RUN rabbitmq-plugins enable --offline \
     rabbitmq_management \
     rabbitmq_mqtt \
