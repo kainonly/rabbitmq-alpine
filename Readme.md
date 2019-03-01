@@ -5,7 +5,7 @@ RabbitMQ custom image
 Docker Pull Command
 
 ```shell
-docker pull kainonly/rabbitmq-alpine
+docker pull kainonly/rabbitmq-alpine:3.7.12
 ```
 
 Set docker-compose
@@ -14,7 +14,7 @@ Set docker-compose
 version: '3.7'
 services:
   rabbitmq:
-    image: kainonly/rabbitmq-alpine:3.7.11
+    image: kainonly/rabbitmq-alpine:3.7.12
     restart: always
     hostname: 'localhost'
     ports:
