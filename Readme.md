@@ -1,11 +1,9 @@
 ## RabbitMQ-Alpine
 
-RabbitMQ custom image
-
 Docker Pull Command
 
 ```shell
-docker pull kainonly/rabbitmq-alpine:3.7.12
+docker pull kainonly/rabbitmq-alpine
 ```
 
 Set docker-compose
@@ -14,7 +12,7 @@ Set docker-compose
 version: '3.7'
 services:
   rabbitmq:
-    image: kainonly/rabbitmq-alpine:3.7.12
+    image: kainonly/rabbitmq-alpine
     restart: always
     hostname: 'localhost'
     ports:
@@ -26,6 +24,8 @@ services:
       - 15675:15675
       - 25672:25672
 ```
+
+You can also use the nginx proxy rabbitmq tcp
 
 - **amqp** `5672`
 - **clustering** `25672`
