@@ -3,8 +3,6 @@ FROM rabbitmq:alpine
 RUN rabbitmq-plugins enable --offline \
     rabbitmq_management \
     rabbitmq_mqtt \
-    rabbitmq_web_mqtt \
-    rabbitmq_stomp \
-    rabbitmq_web_stomp
+    rabbitmq_web_mqtt
 
-EXPOSE 5672 1883 61613 15672 15674 15675 25672
+EXPOSE 5672 1883 15672 15675

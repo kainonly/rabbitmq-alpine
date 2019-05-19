@@ -1,6 +1,12 @@
-## RabbitMQ-Alpine
+## RabbitMQ Alpine
 
-Docker Pull Command
+Docker Image of RabbitMQ with MQTT & MQTT WS protocol
+
+![MicroBadger Size](https://img.shields.io/microbadger/image-size/kainonly/rabbitmq-alpine.svg)
+![MicroBadger Layers](https://img.shields.io/microbadger/layers/kainonly/rabbitmq-alpine.svg)
+![Docker Pulls](https://img.shields.io/docker/pulls/kainonly/rabbitmq-alpine.svg?style=flat-square)
+![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/kainonly/rabbitmq-alpine.svg)
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/kainonly/rabbitmq-alpine.svg?style=flat-square)
 
 ```shell
 docker pull kainonly/rabbitmq-alpine
@@ -18,19 +24,13 @@ services:
     ports:
       - 5672:5672
       - 1883:1883
-      - 61613:61613
       - 15672:15672
-      - 15674:15674
       - 15675:15675
-      - 25672:25672
 ```
 
 You can also use the nginx proxy rabbitmq tcp
 
 - **amqp** `5672`
-- **clustering** `25672`
 - **http** `15672`
-- **stomp** `61613`
-- **web-stomp** `15674`
 - **mqtt** `1883`
 - **web-mqtt** `15675`
