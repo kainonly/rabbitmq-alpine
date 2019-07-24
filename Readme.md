@@ -1,6 +1,6 @@
 ## RabbitMQ Alpine
 
-Docker Image of RabbitMQ with MQTT & MQTT WS protocol
+Docker Image of RabbitMQ with AMQP & STOMP Websocket protocol
 
 ![MicroBadger Size](https://img.shields.io/microbadger/image-size/kainonly/rabbitmq-alpine.svg?style=flat-square)
 ![MicroBadger Layers](https://img.shields.io/microbadger/layers/kainonly/rabbitmq-alpine.svg?style=flat-square)
@@ -30,5 +30,5 @@ services:
 You can also use the nginx proxy rabbitmq tcp
 
 - **amqp** `5672`
-- **websocket-stomp** `15674`
+- **stomp-websocket** `15674`
 - **dashboard** `15672`
