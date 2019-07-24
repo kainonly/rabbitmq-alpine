@@ -23,18 +23,12 @@ services:
     hostname: 'localhost'
     ports:
       - 5672:5672
-      - 1883:1883
       - 15672:15672
       - 15674:15674
-      - 15675:15675
-      - 61613:61613
 ```
 
 You can also use the nginx proxy rabbitmq tcp
 
 - **amqp** `5672`
-- **http** `15672`
-- **mqtt** `1883`
-- **web-mqtt** `15675`
-- **stomp** `61613`
-- **web-stomp** `15674`
+- **websocket-stomp** `15674`
+- **dashboard** `15672`
