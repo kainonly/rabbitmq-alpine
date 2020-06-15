@@ -1,4 +1,4 @@
-FROM rabbitmq:3.8.3-alpine
+FROM rabbitmq:3.8.4-alpine
 
 RUN rabbitmq-plugins enable --offline \
     rabbitmq_management \
@@ -6,5 +6,3 @@ RUN rabbitmq-plugins enable --offline \
     rabbitmq_shovel_management \
     rabbitmq_stomp \
     rabbitmq_web_stomp
-
-EXPOSE 5671 5672 15672 15674 61613

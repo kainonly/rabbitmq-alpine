@@ -12,6 +12,14 @@ Docker Image of RabbitMQ with AMQP & STOMP Websocket protocol
 docker pull kainonly/rabbitmq-alpine
 ```
 
+Included plugin
+
+- **rabbitmq_management**
+- **rabbitmq_shovel**
+- **rabbitmq_shovel_management**
+- **rabbitmq_stomp**
+- **rabbitmq_web_stomp**
+
 Set docker-compose
 
 ```yml
@@ -31,4 +39,4 @@ You can also use the nginx proxy rabbitmq tcp
 
 - **amqp** `5672`
 - **stomp-websocket** `15674`
-- **dashboard** `15672`
+- **api** `15672`
