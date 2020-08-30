@@ -1,4 +1,4 @@
-FROM rabbitmq:3.8.5-alpine
+FROM rabbitmq:3.8.7-alpine
 
 RUN rabbitmq-plugins enable --offline \
     rabbitmq_management \
