@@ -1,7 +1,6 @@
-FROM rabbitmq:3.8.7-alpine
+FROM rabbitmq:3.8.7-management-alpine
 
 RUN rabbitmq-plugins enable --offline \
-    rabbitmq_management \
     rabbitmq_shovel \
     rabbitmq_shovel_management \
     rabbitmq_stomp \
