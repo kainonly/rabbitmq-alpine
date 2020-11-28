@@ -5,8 +5,7 @@ Docker Image of RabbitMQ with AMQP & STOMP Websocket protocol
 ![MicroBadger Size](https://img.shields.io/microbadger/image-size/kainonly/rabbitmq-alpine.svg?style=flat-square)
 ![MicroBadger Layers](https://img.shields.io/microbadger/layers/kainonly/rabbitmq-alpine.svg?style=flat-square)
 ![Docker Pulls](https://img.shields.io/docker/pulls/kainonly/rabbitmq-alpine.svg?style=flat-square)
-![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/kainonly/rabbitmq-alpine.svg?style=flat-square)
-![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/kainonly/rabbitmq-alpine.svg?style=flat-square)
+[![Github Actions](https://img.shields.io/github/workflow/status/docker-maker/rabbitmq-alpine/release?style=flat-square)](https://github.com/docker-marker/rabbitmq-alpine/actions)
 
 ```shell
 docker pull kainonly/rabbitmq-alpine
@@ -23,7 +22,7 @@ Included plugin
 Set docker-compose
 
 ```yml
-version: '3.7'
+version: '3.8'
 services:
   rabbitmq:
     image: kainonly/rabbitmq-alpine
